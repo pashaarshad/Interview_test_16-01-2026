@@ -121,9 +121,12 @@ function SearchForm() {
   const [fromCity, setFromCity] = useState('Bengaluru (BLR)');
   const [toCity, setToCity] = useState('');
   const [addHotel, setAddHotel] = useState(true);
+  const [nearbyFrom, setNearbyFrom] = useState(false);
+  const [nearbyTo, setNearbyTo] = useState(false);
+  const [directFlights, setDirectFlights] = useState(false);
 
   return (
-    <div style={{ backgroundColor: '#05203c', paddingBottom: '48px' }}>
+    <div style={{ backgroundColor: '#05203c', paddingBottom: '40px' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
         {/* Headline */}
         <h1 style={{ color: 'white', fontSize: '28px', fontWeight: '600', marginBottom: '24px' }}>
@@ -131,16 +134,16 @@ function SearchForm() {
         </h1>
 
         {/* Trip Type */}
-        <div style={{ marginBottom: '16px' }}>
+        <div style={{ marginBottom: '12px' }}>
           <button style={{
-            display: 'flex',
+            display: 'inline-flex',
             alignItems: 'center',
-            gap: '8px',
+            gap: '6px',
             backgroundColor: '#1a3a5c',
             color: 'white',
             border: 'none',
-            padding: '8px 16px',
-            borderRadius: '8px',
+            padding: '8px 14px',
+            borderRadius: '6px',
             cursor: 'pointer',
             fontSize: '14px',
           }}>
@@ -151,14 +154,20 @@ function SearchForm() {
         {/* Search Form */}
         <div style={{
           backgroundColor: 'white',
-          borderRadius: '12px',
+          borderRadius: '10px',
           boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-          overflow: 'hidden',
+          overflow: 'visible',
         }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'stretch' }}>
             {/* From */}
-            <div style={{ flex: '1 1 200px', padding: '16px', borderRight: '1px solid #e5e7eb', position: 'relative' }}>
-              <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>From</label>
+            <div style={{
+              flex: '1 1 22%',
+              padding: '12px 16px',
+              borderRight: '1px solid #ddd',
+              position: 'relative',
+              minWidth: '180px',
+            }}>
+              <label style={{ display: 'block', fontSize: '12px', color: '#68697f', marginBottom: '2px' }}>From</label>
               <input
                 type="text"
                 value={fromCity}
@@ -167,9 +176,10 @@ function SearchForm() {
                   width: '100%',
                   border: 'none',
                   outline: 'none',
-                  fontSize: '16px',
+                  fontSize: '15px',
                   fontWeight: '500',
                   color: '#05203c',
+                  background: 'transparent',
                 }}
                 placeholder="Country, city or airport"
               />
@@ -177,16 +187,19 @@ function SearchForm() {
               <button
                 style={{
                   position: 'absolute',
-                  right: '-18px',
+                  right: '-16px',
                   top: '50%',
                   transform: 'translateY(-50%)',
                   backgroundColor: 'white',
-                  border: '2px solid #e5e7eb',
+                  border: '2px solid #ddd',
                   borderRadius: '50%',
-                  padding: '8px',
+                  width: '32px',
+                  height: '32px',
                   cursor: 'pointer',
                   zIndex: 10,
                   display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <SwapIcon />
@@ -194,8 +207,13 @@ function SearchForm() {
             </div>
 
             {/* To */}
-            <div style={{ flex: '1 1 200px', padding: '16px', borderRight: '1px solid #e5e7eb' }}>
-              <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>To</label>
+            <div style={{
+              flex: '1 1 22%',
+              padding: '12px 16px',
+              borderRight: '1px solid #ddd',
+              minWidth: '180px',
+            }}>
+              <label style={{ display: 'block', fontSize: '12px', color: '#68697f', marginBottom: '2px' }}>To</label>
               <input
                 type="text"
                 value={toCity}
@@ -204,61 +222,81 @@ function SearchForm() {
                   width: '100%',
                   border: 'none',
                   outline: 'none',
-                  fontSize: '16px',
+                  fontSize: '15px',
                   fontWeight: '500',
                   color: '#05203c',
+                  background: 'transparent',
                 }}
                 placeholder="Country, city or airport"
               />
             </div>
 
             {/* Depart */}
-            <div style={{ flex: '1 1 120px', padding: '16px', borderRight: '1px solid #e5e7eb' }}>
-              <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>Depart</label>
+            <div style={{
+              flex: '1 1 14%',
+              padding: '12px 16px',
+              borderRight: '1px solid #ddd',
+              minWidth: '110px',
+            }}>
+              <label style={{ display: 'block', fontSize: '12px', color: '#68697f', marginBottom: '2px' }}>Depart</label>
               <input
                 type="text"
                 style={{
                   width: '100%',
                   border: 'none',
                   outline: 'none',
-                  fontSize: '16px',
+                  fontSize: '15px',
                   color: '#9ca3af',
+                  background: 'transparent',
                 }}
                 placeholder="Add date"
               />
             </div>
 
             {/* Return */}
-            <div style={{ flex: '1 1 120px', padding: '16px', borderRight: '1px solid #e5e7eb' }}>
-              <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>Return</label>
+            <div style={{
+              flex: '1 1 14%',
+              padding: '12px 16px',
+              borderRight: '1px solid #ddd',
+              minWidth: '110px',
+            }}>
+              <label style={{ display: 'block', fontSize: '12px', color: '#68697f', marginBottom: '2px' }}>Return</label>
               <input
                 type="text"
                 style={{
                   width: '100%',
                   border: 'none',
                   outline: 'none',
-                  fontSize: '16px',
+                  fontSize: '15px',
                   color: '#9ca3af',
+                  background: 'transparent',
                 }}
                 placeholder="Add date"
               />
             </div>
 
-            {/* Travelers + Search */}
-            <div style={{ flex: '1 1 260px', padding: '16px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div style={{ flex: 1 }}>
-                <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>Travellers and cabin class</label>
-                <span style={{ fontSize: '16px', fontWeight: '500', color: '#05203c' }}>1 Adult, Economy</span>
-              </div>
+            {/* Travelers */}
+            <div style={{
+              flex: '1 1 22%',
+              padding: '12px 16px',
+              minWidth: '180px',
+            }}>
+              <label style={{ display: 'block', fontSize: '12px', color: '#68697f', marginBottom: '2px' }}>Travellers and cabin class</label>
+              <span style={{ fontSize: '15px', fontWeight: '500', color: '#05203c' }}>1 Adult, Economy</span>
+            </div>
+
+            {/* Search Button */}
+            <div style={{ display: 'flex', alignItems: 'center', padding: '8px 8px 8px 0' }}>
               <button style={{
-                backgroundColor: '#00a698',
+                backgroundColor: '#0770e3',
                 color: 'white',
                 border: 'none',
-                padding: '12px 24px',
+                padding: '14px 28px',
                 borderRadius: '8px',
                 fontWeight: '600',
                 cursor: 'pointer',
                 fontSize: '16px',
+                whiteSpace: 'nowrap',
               }}>
                 Search
               </button>
@@ -266,26 +304,50 @@ function SearchForm() {
           </div>
         </div>
 
-        {/* Checkboxes */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', marginTop: '16px', color: 'white', fontSize: '14px' }}>
+        {/* Checkboxes - Row 1 */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', marginTop: '12px', color: 'white', fontSize: '14px' }}>
           <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-            <input type="checkbox" style={{ width: '18px', height: '18px' }} />
+            <input
+              type="checkbox"
+              checked={nearbyFrom}
+              onChange={(e) => setNearbyFrom(e.target.checked)}
+              style={{ width: '16px', height: '16px', accentColor: '#0770e3' }}
+            />
             Add nearby airports
           </label>
           <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-            <input type="checkbox" style={{ width: '18px', height: '18px' }} />
+            <input
+              type="checkbox"
+              checked={nearbyTo}
+              onChange={(e) => setNearbyTo(e.target.checked)}
+              style={{ width: '16px', height: '16px', accentColor: '#0770e3' }}
+            />
             Add nearby airports
-          </label>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-            <input type="checkbox" style={{ width: '18px', height: '18px' }} />
-            Direct flights
           </label>
           <div style={{ marginLeft: 'auto' }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-              <input type="checkbox" checked={addHotel} onChange={(e) => setAddHotel(e.target.checked)} style={{ width: '18px', height: '18px' }} />
+              <input
+                type="checkbox"
+                checked={addHotel}
+                onChange={(e) => setAddHotel(e.target.checked)}
+                style={{ width: '16px', height: '16px', accentColor: '#0770e3' }}
+              />
               Add a hotel
             </label>
           </div>
+        </div>
+
+        {/* Checkboxes - Row 2 */}
+        <div style={{ display: 'flex', gap: '24px', marginTop: '8px', color: 'white', fontSize: '14px' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              checked={directFlights}
+              onChange={(e) => setDirectFlights(e.target.checked)}
+              style={{ width: '16px', height: '16px', accentColor: '#0770e3' }}
+            />
+            Direct flights
+          </label>
         </div>
       </div>
     </div>
@@ -358,11 +420,12 @@ function PromoBanner() {
           position: 'relative',
           borderRadius: '16px',
           overflow: 'hidden',
-          height: '400px',
+          height: '350px',
         }}>
+          {/* Background Image - already contains 35% off badge */}
           <img
-            src="/promo-banner.png"
-            alt="Save on your next stay"
+            src="/Tablet-IN-SING-AU.jpg"
+            alt="Save on your next stay - up to 35% off"
             style={{
               width: '100%',
               height: '100%',
@@ -370,11 +433,11 @@ function PromoBanner() {
             }}
           />
 
-          {/* Overlay */}
+          {/* Overlay for text readability */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(to right, rgba(0,0,0,0.4), transparent)',
+            background: 'linear-gradient(to right, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 40%, transparent 60%)',
           }} />
 
           {/* Content */}
@@ -404,25 +467,6 @@ function PromoBanner() {
             }}>
               Go
             </button>
-          </div>
-
-          {/* 35% off badge */}
-          <div style={{
-            position: 'absolute',
-            top: '24px',
-            right: '24px',
-            backgroundColor: 'white',
-            borderRadius: '12px',
-            padding: '12px 16px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-          }}>
-            <svg className="w-6 h-6" style={{ width: '24px', height: '24px', color: '#0770e3' }} viewBox="0 0 24 24" fill="currentColor">
-              <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z" />
-            </svg>
-            <span style={{ color: '#0770e3', fontSize: '24px', fontWeight: '700' }}>35% off</span>
           </div>
         </div>
       </div>
