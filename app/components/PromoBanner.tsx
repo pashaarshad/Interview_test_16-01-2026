@@ -9,7 +9,7 @@ export default function PromoBanner() {
                 <div className="relative rounded-2xl overflow-hidden h-[350px] md:h-[400px]">
                     {/* Background Image */}
                     <img
-                        src="/promo-banner.png"
+                        src="/Tablet-IN-SING-AU.jpg"
                         alt="Save on your next stay"
                         className="absolute inset-0 w-full h-full object-cover"
                     />
