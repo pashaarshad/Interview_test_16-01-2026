@@ -262,7 +262,8 @@ function SearchForm() {
         {/* Search Form Container */}
         <div style={{
           backgroundColor: 'white',
-          borderRadius: '12px',
+          borderRadius: '16px',
+          border: '2px solid #05203c',
           boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           overflow: 'visible',
         }}>
@@ -617,7 +618,7 @@ function FAQ() {
                   textAlign: 'left',
                 }}
               >
-                <span style={{ color: '#0770e3', fontWeight: '400', fontSize: '16px', paddingRight: '16px', lineHeight: '1.4' }}>{faq.q}</span>
+                <span style={{ color: '#161616', fontWeight: '400', fontSize: '16px', paddingRight: '16px', lineHeight: '1.4' }}>{faq.q}</span>
                 <ChevronDown rotate={openItems.has(i)} />
               </button>
               {openItems.has(i) && (
@@ -671,9 +672,12 @@ function InternationalSites() {
         </div>
         <div className="links-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px 48px' }}>
           {links.map((link, i) => (
-            <a key={i} href="#" style={{ color: '#0770e3', fontSize: '14px', textDecoration: 'none', padding: '6px 0' }}>{link}</a>
+            <a key={i} href="#" style={{ color: '#161616', fontSize: '14px', textDecoration: 'none', padding: '6px 0' }}>{link}</a>
           ))}
         </div>
+
+        {/* Horizontal Divider */}
+        <hr style={{ border: 'none', borderTop: '1px solid #d1d5db', margin: '32px 0 0' }} />
       </div>
     </div>
   );
