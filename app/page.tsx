@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // ===== RESPONSIVE STYLES =====
 const ResponsiveStyles = () => (
@@ -19,9 +19,22 @@ const ResponsiveStyles = () => (
       color: #161616;
     }
     
+    /* Animated city name */
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(10px); }
+      15% { opacity: 1; transform: translateY(0); }
+      85% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-10px); }
+    }
+    
+    .animate-city {
+      animation: fadeInUp 3s ease-in-out infinite;
+    }
+    
     /* Mobile-first responsive design */
     @media (max-width: 768px) {
       .desktop-only { display: none !important; }
+      .mobile-only { display: block !important; }
       .search-form-container { flex-direction: column !important; }
       .search-field { 
         flex: 1 1 100% !important; 
@@ -39,8 +52,10 @@ const ResponsiveStyles = () => (
       .promo-banner { height: 350px !important; }
       .promo-title { font-size: 28px !important; }
       .promo-subtitle { font-size: 14px !important; }
+      .promo-content { width: 60% !important; }
       .faq-grid { grid-template-columns: 1fr !important; }
-      .footer-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 20px !important; }
+      .footer-main { flex-direction: column !important; gap: 32px !important; }
+      .footer-right { flex-direction: column !important; gap: 24px !important; }
       .links-grid { grid-template-columns: 1fr !important; }
       .header-right { gap: 12px !important; }
       .main-container { padding: 0 16px !important; }
@@ -56,8 +71,7 @@ const ResponsiveStyles = () => (
     @media (max-width: 480px) {
       .promo-banner { height: 300px !important; }
       .promo-title { font-size: 24px !important; }
-      .promo-content { padding: 24px !important; }
-      .footer-grid { grid-template-columns: 1fr !important; }
+      .promo-content { padding: 24px !important; width: 100% !important; background: linear-gradient(to right, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.9) 80%, rgba(255,255,255,0) 100%) !important; }
     }
     
     button:focus-visible, input:focus-visible, a:focus-visible {
@@ -120,7 +134,7 @@ const SwapIcon = () => (
   </svg>
 );
 
-const ChevronDown = ({ rotate = false }: { rotate?: boolean }) => (
+const ChevronDown = ({ rotate = false, color = 'currentColor' }: { rotate?: boolean; color?: string }) => (
   <svg
     style={{
       width: '16px',
@@ -129,7 +143,7 @@ const ChevronDown = ({ rotate = false }: { rotate?: boolean }) => (
       transform: rotate ? 'rotate(180deg)' : 'rotate(0deg)'
     }}
     viewBox="0 0 24 24"
-    fill="currentColor"
+    fill={color}
   >
     <path d="M7 10l5 5 5-5z" />
   </svg>
@@ -194,14 +208,23 @@ function Header() {
   );
 }
 
-// ===== SEARCH FORM COMPONENT =====
+// ===== SEARCH FORM COMPONENT WITH ANIMATED CITIES =====
 function SearchForm() {
-  const [fromCity, setFromCity] = useState('Bengaluru (BLR)');
+  const cities = ['Bengaluru (BLR)', 'Mumbai (BOM)', 'Delhi (DEL)', 'Chennai (MAA)', 'Hyderabad (HYD)', 'Kolkata (CCU)'];
+  const [cityIndex, setCityIndex] = useState(0);
   const [toCity, setToCity] = useState('');
   const [addHotel, setAddHotel] = useState(true);
   const [nearbyFrom, setNearbyFrom] = useState(false);
   const [nearbyTo, setNearbyTo] = useState(false);
   const [directFlights, setDirectFlights] = useState(false);
+
+  // Animated city switching
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCityIndex((prev) => (prev + 1) % cities.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [cities.length]);
 
   return (
     <div style={{ backgroundColor: '#05203c', paddingBottom: '40px' }}>
@@ -253,21 +276,17 @@ function SearchForm() {
               minWidth: '170px',
             }}>
               <label style={{ display: 'block', fontSize: '12px', color: '#626971', marginBottom: '4px' }}>From</label>
-              <input
-                type="text"
-                value={fromCity}
-                onChange={(e) => setFromCity(e.target.value)}
+              <div
+                key={cityIndex}
+                className="animate-city"
                 style={{
-                  width: '100%',
-                  border: 'none',
-                  outline: 'none',
                   fontSize: '16px',
                   fontWeight: '700',
                   color: '#161616',
-                  background: 'transparent',
                 }}
-                placeholder="Country, city or airport"
-              />
+              >
+                {cities[cityIndex]}
+              </div>
               {/* Swap Button */}
               <button
                 className="swap-btn"
@@ -369,7 +388,7 @@ function SearchForm() {
           </div>
         </div>
 
-        {/* Checkboxes - Matching exact layout from reference */}
+        {/* Checkboxes - First Row */}
         <div className="checkbox-grid" style={{
           display: 'flex',
           flexWrap: 'wrap',
@@ -377,7 +396,6 @@ function SearchForm() {
           color: 'white',
           fontSize: '14px',
         }}>
-          {/* First row of checkboxes */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '32px', flex: '1' }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
               <input type="checkbox" checked={nearbyFrom} onChange={(e) => setNearbyFrom(e.target.checked)}
@@ -508,7 +526,7 @@ function PromoBanner() {
               left: 0,
               bottom: 0,
               width: '45%',
-              background: 'linear-gradient(to right, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 70%, rgba(255,255,255,0) 100%)',
+              background: 'linear-gradient(to right, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.9) 60%, rgba(255,255,255,0) 100%)',
               padding: '48px',
               display: 'flex',
               flexDirection: 'column',
@@ -558,46 +576,16 @@ function FAQ() {
   const [openItems, setOpenItems] = useState<Set<number>>(new Set());
 
   const faqs = [
-    {
-      q: "How does Skyscanner work?",
-      a: "We're a flight, car hire and hotel search engine. We scan all the top airlines and travel providers across the net, so you can compare flight fares and other travel costs in one place. Once you've found the best flight, car hire or hotel, you book directly with the provider."
-    },
-    {
-      q: "How can I find the cheapest flight using Skyscanner?",
-      a: "Finding flights is easy here – over 100 million savvy travellers come to us each month to find cheap flight tickets, hotels and car hire. Save money and time. Whether it's the fastest flight or the smartest stay, you can pick your preferred flight provider or hotel based on real traveller ratings, and book instantly."
-    },
-    {
-      q: "Where should I book a flight to right now?",
-      a: "If you're looking for inspiration for your next trip, search Everywhere to find a cheap flight ticket anywhere."
-    },
-    {
-      q: "Do I book my flight with Skyscanner?",
-      a: "We're a search engine, so after you've found the best flight ticket you'll book directly with the airline or travel provider on their site."
-    },
-    {
-      q: "What happens after I have booked my flight?",
-      a: "Your flight booking confirmation email and all the other info you'll need will come from the airline or provider you booked with."
-    },
-    {
-      q: "Does Skyscanner do hotels too?",
-      a: "Yes! You can use the same magic that powers our flight search to find your perfect stay anywhere."
-    },
-    {
-      q: "What about car hire?",
-      a: "You can also use Skyscanner to search for and compare cheap car hire in seconds, then pick up your wheels from the airport as soon as you touch down."
-    },
-    {
-      q: "What's a Price Alert?",
-      a: "If you set up a Price Alert, we'll watch the price of plane tickets for you, and let you know via email or push notification via the app if they rise or fall."
-    },
-    {
-      q: "Can I book a flexible flight ticket?",
-      a: "We understand how important it is to have flexible holiday plans. Sometimes, you can pay an extra fee for an amendable airline ticket, so look out for this option as you book."
-    },
-    {
-      q: "Can I book flights that emit less CO₂?",
-      a: "Yes - since we began showing carbon emission info on flights where it's available, over 100 million travellers have found a plane ticket with lower emissions for their route."
-    },
+    { q: "How does Skyscanner work?", a: "We're a flight, car hire and hotel search engine. We scan all the top airlines and travel providers across the net, so you can compare flight fares and other travel costs in one place. Once you've found the best flight, car hire or hotel, you book directly with the provider." },
+    { q: "How can I find the cheapest flight using Skyscanner?", a: "Finding flights is easy here – over 100 million savvy travellers come to us each month to find cheap flight tickets, hotels and car hire. Save money and time." },
+    { q: "Where should I book a flight to right now?", a: "If you're looking for inspiration for your next trip, search Everywhere to find a cheap flight ticket anywhere." },
+    { q: "Do I book my flight with Skyscanner?", a: "We're a search engine, so after you've found the best flight ticket you'll book directly with the airline or travel provider on their site." },
+    { q: "What happens after I have booked my flight?", a: "Your flight booking confirmation email and all the other info you'll need will come from the airline or provider you booked with." },
+    { q: "Does Skyscanner do hotels too?", a: "Yes! You can use the same magic that powers our flight search to find your perfect stay anywhere." },
+    { q: "What about car hire?", a: "You can also use Skyscanner to search for and compare cheap car hire in seconds, then pick up your wheels from the airport as soon as you touch down." },
+    { q: "What's a Price Alert?", a: "If you set up a Price Alert, we'll watch the price of plane tickets for you, and let you know via email or push notification via the app if they rise or fall." },
+    { q: "Can I book a flexible flight ticket?", a: "We understand how important it is to have flexible holiday plans. Sometimes, you can pay an extra fee for an amendable airline ticket, so look out for this option as you book." },
+    { q: "Can I book flights that emit less CO₂?", a: "Yes - since we began showing carbon emission info on flights where it's available, over 100 million travellers have found a plane ticket with lower emissions for their route." },
   ];
 
   const toggle = (i: number) => {
@@ -629,26 +617,11 @@ function FAQ() {
                   textAlign: 'left',
                 }}
               >
-                <span style={{
-                  color: '#0770e3',
-                  fontWeight: '400',
-                  fontSize: '16px',
-                  paddingRight: '16px',
-                  lineHeight: '1.4'
-                }}>
-                  {faq.q}
-                </span>
+                <span style={{ color: '#0770e3', fontWeight: '400', fontSize: '16px', paddingRight: '16px', lineHeight: '1.4' }}>{faq.q}</span>
                 <ChevronDown rotate={openItems.has(i)} />
               </button>
               {openItems.has(i) && (
-                <p style={{
-                  padding: '0 0 20px',
-                  color: '#626971',
-                  fontSize: '14px',
-                  lineHeight: '1.6'
-                }}>
-                  {faq.a}
-                </p>
+                <p style={{ padding: '0 0 20px', color: '#626971', fontSize: '14px', lineHeight: '1.6' }}>{faq.a}</p>
               )}
             </div>
           ))}
@@ -673,11 +646,9 @@ function InternationalSites() {
         <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#161616', marginBottom: '24px' }}>
           Our international sites
         </h3>
-
         <h4 style={{ fontSize: '20px', fontWeight: '700', color: '#161616', marginBottom: '20px' }}>
           Start planning your adventure
         </h4>
-
         <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap' }}>
           {['Country', 'City', 'Region', 'Airport'].map((tab) => (
             <button
@@ -698,12 +669,9 @@ function InternationalSites() {
             </button>
           ))}
         </div>
-
         <div className="links-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px 48px' }}>
           {links.map((link, i) => (
-            <a key={i} href="#" style={{ color: '#0770e3', fontSize: '14px', textDecoration: 'none', padding: '6px 0' }}>
-              {link}
-            </a>
+            <a key={i} href="#" style={{ color: '#0770e3', fontSize: '14px', textDecoration: 'none', padding: '6px 0' }}>{link}</a>
           ))}
         </div>
       </div>
@@ -711,61 +679,82 @@ function InternationalSites() {
   );
 }
 
-// ===== FOOTER =====
+// ===== FOOTER - Matching exact reference layout =====
 function Footer() {
   return (
     <footer style={{ backgroundColor: '#05203c', color: 'white', padding: '48px 0 32px' }}>
       <div className="main-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
-        <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '32px' }}>
-          <div>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px' }}>
-              <li style={{ marginBottom: '12px' }}><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Help</a></li>
-              <li style={{ marginBottom: '12px' }}><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Privacy Settings</a></li>
-              <li><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Log in</a></li>
-            </ul>
+        {/* Main Footer Content */}
+        <div className="footer-main" style={{ display: 'flex', gap: '48px', marginBottom: '32px' }}>
+          {/* Country Selector */}
+          <div style={{ flexShrink: 0 }}>
+            <button style={{
+              backgroundColor: 'rgba(255,255,255,0.1)',
+              color: 'white',
+              border: '1px solid rgba(255,255,255,0.3)',
+              padding: '12px 20px',
+              borderRadius: '8px',
+              textAlign: 'left',
+              cursor: 'pointer',
+              fontSize: '14px',
+              whiteSpace: 'nowrap',
+            }}>
+              India · English (UK) · ₹ INR
+            </button>
           </div>
 
-          <div>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px' }}>
-              <li style={{ marginBottom: '12px' }}><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Cookie policy</a></li>
-              <li style={{ marginBottom: '12px' }}><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Privacy policy</a></li>
-              <li style={{ marginBottom: '12px' }}><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Terms of service</a></li>
-              <li><a href="#" style={{ color: '#ff9332', textDecoration: 'none' }}>Company Details</a></li>
-            </ul>
-          </div>
+          {/* Links Columns */}
+          <div className="footer-right" style={{ display: 'flex', flex: 1, gap: '64px' }}>
+            {/* Column 1 */}
+            <div>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px' }}>
+                <li style={{ marginBottom: '12px' }}><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Help</a></li>
+                <li style={{ marginBottom: '12px' }}><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Privacy Settings</a></li>
+                <li><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Log in</a></li>
+              </ul>
+            </div>
 
-          <div>
-            <h5 style={{ fontWeight: '700', marginBottom: '16px', fontSize: '14px' }}>Explore</h5>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>
-              <li style={{ marginBottom: '10px' }}><a href="#" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Flights</a></li>
-              <li style={{ marginBottom: '10px' }}><a href="#" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Hotels</a></li>
-              <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Car hire</a></li>
-            </ul>
-          </div>
+            {/* Column 2 */}
+            <div>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px' }}>
+                <li style={{ marginBottom: '12px' }}><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Cookie policy</a></li>
+                <li style={{ marginBottom: '12px' }}><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Privacy policy</a></li>
+                <li style={{ marginBottom: '12px' }}><a href="#" style={{ color: 'white', textDecoration: 'none' }}>Terms of service</a></li>
+                <li><a href="#" style={{ color: '#ff9332', textDecoration: 'none' }}>Company Details</a></li>
+              </ul>
+            </div>
 
-          <div>
-            <h5 style={{ fontWeight: '700', marginBottom: '16px', fontSize: '14px' }}>Company</h5>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>
-              <li style={{ marginBottom: '10px' }}><a href="#" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>About us</a></li>
-              <li style={{ marginBottom: '10px' }}><a href="#" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Careers</a></li>
-              <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>News</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h5 style={{ fontWeight: '700', marginBottom: '16px', fontSize: '14px' }}>Partners</h5>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>
-              <li style={{ marginBottom: '10px' }}><a href="#" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Work with us</a></li>
-              <li><a href="#" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Travel APIs</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h5 style={{ fontWeight: '700', marginBottom: '16px', fontSize: '14px' }}>Trips</h5>
+            {/* Column 3 - Expandable sections */}
+            <div style={{ flex: 1 }}>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px' }}>
+                <li style={{ marginBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                  <span style={{ color: 'white' }}>Explore</span>
+                  <ChevronDown color="white" />
+                </li>
+                <li style={{ marginBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                  <span style={{ color: 'white' }}>Company</span>
+                  <ChevronDown color="white" />
+                </li>
+                <li style={{ marginBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                  <span style={{ color: 'white' }}>Partners</span>
+                  <ChevronDown color="white" />
+                </li>
+                <li style={{ marginBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                  <span style={{ color: 'white' }}>Trips</span>
+                  <ChevronDown color="white" />
+                </li>
+                <li style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
+                  <span style={{ color: 'white' }}>International Sites</span>
+                  <ChevronDown color="white" />
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', marginTop: '40px', paddingTop: '24px', textAlign: 'center', fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>
+        {/* Footer Bottom */}
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '24px', textAlign: 'center', fontSize: '13px', color: 'rgba(255,255,255,0.7)' }}>
+          <p style={{ marginBottom: '4px' }}>Cheap flight booking from anywhere, to everywhere</p>
           <p>© Skyscanner Ltd 2002 – 2026</p>
         </div>
       </div>
