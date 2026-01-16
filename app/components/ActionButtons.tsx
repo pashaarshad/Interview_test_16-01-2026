@@ -22,22 +22,21 @@ const GlobeIcon = () => (
 
 export default function ActionButtons() {
     const buttons = [
-        { id: 'hotels', label: 'Hotels', icon: HotelIcon, color: 'bg-[#05203c]' },
-        { id: 'cars', label: 'Car hire', icon: CarIcon, color: 'bg-[#0b2d4e]' },
-        { id: 'explore', label: 'Explore everywhere', icon: GlobeIcon, color: 'bg-[#05203c]' },
+        { id: 'hotels', label: 'Hotels', icon: HotelIcon },
+        { id: 'cars', label: 'Car hire', icon: CarIcon },
+        { id: 'explore', label: 'Explore everywhere', icon: GlobeIcon },
     ];
 
     return (
-        <div className="bg-white py-8">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white py-6">
+            <div className="max-w-6xl mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {buttons.map((button, index) => {
+                    {buttons.map((button) => {
                         const Icon = button.icon;
                         return (
                             <button
                                 key={button.id}
-                                className={`${button.color} text-white rounded-xl py-4 px-6 flex items-center justify-center gap-3 hover:opacity-90 transition-all duration-200 hover-lift animate-slideUp`}
-                                style={{ animationDelay: `${index * 0.1}s` }}
+                                className="bg-[#05203c] text-white rounded-xl py-4 px-6 flex items-center justify-center gap-3 hover:bg-[#0a2e4e] transition-all"
                             >
                                 <Icon />
                                 <span className="font-medium">{button.label}</span>
