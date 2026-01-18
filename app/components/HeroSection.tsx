@@ -32,21 +32,31 @@ const CheckIcon = () => (
     </svg>
 );
 
-export default function HeroSection() {
-    const [activeTab, setActiveTab] = useState<'flights' | 'hotels' | 'tours'>('flights');
+interface HeroSectionProps {
+    activeTab: 'flights' | 'hotels' | 'tours';
+    onTabChange: (tab: 'flights' | 'hotels' | 'tours') => void;
+}
+
+export default function HeroSection({ activeTab, onTabChange }: HeroSectionProps) {
     const [fromCity, setFromCity] = useState('Bengaluru (BLR)');
     const [toCity, setToCity] = useState('');
     const [nearbyFrom, setNearbyFrom] = useState(false);
-    const [nearbyTo, setNearbyTo] = useState(false);
     const [directFlights, setDirectFlights] = useState(false);
 
-    // Background image style - using the generated image path
-    // Since we are not strictly using Next.js Image component for background often (CSS is easier for full bleed)
-    const bgStyle = {
-        backgroundImage: `url('/images/hero-flight.jpg')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
+    const getBgImage = () => {
+        switch (activeTab) {
+            case 'hotels': return "url('/images/hotels/hotel-hero.jpg')";
+            case 'tours': return "url('/images/tours/tour-hero.jpg')";
+            default: return "url('/images/flights/hero-flight.jpg')";
+        }
+    };
+
+    const getHeadline = () => {
+        switch (activeTab) {
+            case 'hotels': return "Find the right hotel today";
+            case 'tours': return "Discover tours, tickets and travel experiences";
+            default: return "The best flight offers from anywhere, to everywhere";
+        }
     };
 
     const swapCities = () => {
@@ -56,151 +66,250 @@ export default function HeroSection() {
     };
 
     return (
-        <div className="relative min-h-[550px] flex flex-col pt-10 pb-20 px-4" style={bgStyle}>
-            {/* Dark overlay for readability */}
-            <div className="absolute inset-0 bg-[#05203c]/40 z-0"></div>
+        <div
+            className="relative min-h-[520px] flex flex-col justify-start pt-8 pb-16 px-4"
+            style={{
+                backgroundImage: getBgImage(),
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                transition: 'background-image 0.5s ease-in-out'
+            }}
+        >
+            {/* Dark Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#05203c]/60 via-[#05203c]/40 to-[#05203c]/70 z-0" />
 
-            <div className="relative z-10 w-full max-w-[1248px] mx-auto">
+            <div className="relative z-10 w-full max-w-[1200px] mx-auto">
                 {/* Headline */}
-                <h1 className="text-white text-4xl font-bold mb-8 leading-tight tracking-tight drop-shadow-md max-w-2xl">
-                    The best flight offers from anywhere, to everywhere
+                <h1 className="text-white text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 leading-tight tracking-tight drop-shadow-lg max-w-3xl">
+                    {getHeadline()}
                 </h1>
 
                 {/* Search Widget Container */}
-                <div className="bg-[#05203c] rounded-[16px] shadow-2xl p-6">
+                <div className="bg-[#05203c] rounded-2xl shadow-2xl p-5 sm:p-6 border border-white/10">
 
                     {/* Tabs */}
-                    <div className="flex gap-2 mb-6">
+                    <div className="flex flex-wrap gap-2 mb-5">
                         <button
-                            onClick={() => setActiveTab('flights')}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'flights' ? 'bg-[#0770e3] text-white' : 'text-white hover:bg-white/10'}`}
+                            onClick={() => onTabChange('flights')}
+                            className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 ${activeTab === 'flights'
+                                    ? 'bg-[#0770e3] text-white shadow-lg'
+                                    : 'text-white/80 hover:bg-white/10 hover:text-white'
+                                }`}
                         >
                             <PlaneIcon />
-                            Flights
+                            <span>Flights</span>
                         </button>
                         <button
-                            onClick={() => setActiveTab('hotels')}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'hotels' ? 'bg-[#0770e3] text-white' : 'text-white hover:bg-white/10'}`}
+                            onClick={() => onTabChange('hotels')}
+                            className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 ${activeTab === 'hotels'
+                                    ? 'bg-[#0770e3] text-white shadow-lg'
+                                    : 'text-white/80 hover:bg-white/10 hover:text-white'
+                                }`}
                         >
                             <HotelIcon />
-                            Hotels
+                            <span>Hotels</span>
                         </button>
                         <button
-                            onClick={() => setActiveTab('tours')}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'tours' ? 'bg-[#0770e3] text-white' : 'text-white hover:bg-white/10'}`}
+                            onClick={() => onTabChange('tours')}
+                            className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 ${activeTab === 'tours'
+                                    ? 'bg-[#0770e3] text-white shadow-lg'
+                                    : 'text-white/80 hover:bg-white/10 hover:text-white'
+                                }`}
                         >
                             <ToursIcon />
-                            Tours & Tickets
+                            <span>Tours & Tickets</span>
                         </button>
                     </div>
 
                     {/* FLIGHTS FORM */}
                     {activeTab === 'flights' && (
-                        <div className="flex flex-col gap-4">
-                            <div className="flex gap-2 mb-2">
-                                <button className="text-white text-sm flex items-center gap-1">Return <span className="text-[10px]">▼</span></button>
-                                <button className="text-white text-sm flex items-center gap-1">1 Adult, Economy <span className="text-[10px]">▼</span></button>
+                        <div className="space-y-4">
+                            {/* Trip Type Row */}
+                            <div className="flex flex-wrap gap-3 text-white/90 text-sm">
+                                <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">
+                                    <span>Return</span>
+                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" /></svg>
+                                </button>
+                                <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">
+                                    <span>1 Adult, Economy</span>
+                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" /></svg>
+                                </button>
                             </div>
 
-                            <div className="flex flex-col lg:flex-row gap-1">
+                            {/* Search Fields */}
+                            <div className="flex flex-col lg:flex-row bg-white rounded-xl overflow-hidden shadow-lg">
                                 {/* From */}
-                                <div className="flex-1 min-w-[200px] relative">
-                                    <div className="bg-white rounded-t-lg lg:rounded-l-lg lg:rounded-tr-none p-3 h-full flex flex-col justify-center">
-                                        <label className="text-xs text-gray-500 font-semibold">From</label>
+                                <div className="flex-1 min-w-0 relative border-b lg:border-b-0 lg:border-r border-gray-200">
+                                    <div className="p-4">
+                                        <label className="block text-xs font-semibold text-gray-500 mb-1">From</label>
                                         <input
                                             type="text"
                                             value={fromCity}
                                             onChange={(e) => setFromCity(e.target.value)}
-                                            className="w-full font-bold text-[#05203c] outline-none text-ellipsis"
+                                            className="w-full text-lg font-bold text-[#05203c] outline-none bg-transparent truncate"
                                             placeholder="Country, city or airport"
                                         />
                                     </div>
-                                    <button onClick={swapCities} className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white border border-gray-300 rounded-full p-1.5 shadow-md hover:text-[#0770e3] lg:block hidden">
+                                    {/* Swap Button */}
+                                    <button
+                                        onClick={swapCities}
+                                        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-20 bg-white border-2 border-gray-200 rounded-full p-2 shadow-md hover:border-[#0770e3] hover:text-[#0770e3] transition-all hidden lg:flex"
+                                    >
                                         <SwapIcon />
                                     </button>
                                 </div>
 
                                 {/* To */}
-                                <div className="flex-1 min-w-[200px]">
-                                    <div className="bg-white lg:rounded-none p-3 h-full flex flex-col justify-center">
-                                        <label className="text-xs text-gray-500 font-semibold">To</label>
+                                <div className="flex-1 min-w-0 border-b lg:border-b-0 lg:border-r border-gray-200">
+                                    <div className="p-4">
+                                        <label className="block text-xs font-semibold text-gray-500 mb-1">To</label>
                                         <input
                                             type="text"
                                             value={toCity}
                                             onChange={(e) => setToCity(e.target.value)}
-                                            className="w-full font-bold text-[#05203c] outline-none text-ellipsis"
+                                            className="w-full text-lg font-bold text-[#05203c] outline-none bg-transparent truncate"
                                             placeholder="Country, city or airport"
                                         />
                                     </div>
                                 </div>
 
                                 {/* Depart */}
-                                <div className="flex-1 min-w-[140px]">
-                                    <div className="bg-white lg:rounded-none p-3 h-full flex flex-col justify-center border-l lg:border-l border-gray-100">
-                                        <label className="text-xs text-gray-500 font-semibold">Depart</label>
-                                        <input type="text" placeholder="Add date" className="w-full font-bold text-[#05203c] outline-none placeholder-gray-400" />
+                                <div className="flex-1 min-w-0 border-b lg:border-b-0 lg:border-r border-gray-200">
+                                    <div className="p-4">
+                                        <label className="block text-xs font-semibold text-gray-500 mb-1">Depart</label>
+                                        <input
+                                            type="text"
+                                            className="w-full text-lg font-bold text-gray-400 outline-none bg-transparent"
+                                            placeholder="Add date"
+                                        />
                                     </div>
                                 </div>
 
                                 {/* Return */}
-                                <div className="flex-1 min-w-[140px]">
-                                    <div className="bg-white lg:rounded-none p-3 h-full flex flex-col justify-center border-l border-gray-100">
-                                        <label className="text-xs text-gray-500 font-semibold">Return</label>
-                                        <input type="text" placeholder="Add date" className="w-full font-bold text-[#05203c] outline-none placeholder-gray-400" />
+                                <div className="flex-1 min-w-0 border-b lg:border-b-0 lg:border-r border-gray-200">
+                                    <div className="p-4">
+                                        <label className="block text-xs font-semibold text-gray-500 mb-1">Return</label>
+                                        <input
+                                            type="text"
+                                            className="w-full text-lg font-bold text-gray-400 outline-none bg-transparent"
+                                            placeholder="Add date"
+                                        />
                                     </div>
                                 </div>
 
                                 {/* Search Button */}
-                                <div className="lg:pl-2">
-                                    <button className="w-full lg:w-auto h-full bg-[#00a698] hover:bg-[#008f82] text-white text-xl font-bold px-8 py-3 rounded-b-lg lg:rounded-r-lg lg:rounded-bl-none transition-colors">
+                                <div className="p-2 lg:p-0">
+                                    <button className="w-full lg:w-auto h-full min-h-[56px] lg:min-h-full bg-[#00a698] hover:bg-[#008f82] text-white text-lg font-bold px-8 py-4 lg:rounded-none lg:rounded-r-xl rounded-lg transition-colors">
                                         Search
                                     </button>
                                 </div>
                             </div>
 
                             {/* Checkboxes */}
-                            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-2 text-white text-sm font-medium">
-                                <label className="flex items-center gap-2 cursor-pointer group">
-                                    <div className={`w-5 h-5 border-2 rounded flex items-center justify-center transition-all ${nearbyFrom ? 'bg-[#00a698] border-[#00a698]' : 'border-gray-400 group-hover:border-white'}`}>
+                            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-white text-sm">
+                                <label className="flex items-center gap-2.5 cursor-pointer group">
+                                    <div className={`w-5 h-5 border-2 rounded flex items-center justify-center transition-all ${nearbyFrom ? 'bg-[#00a698] border-[#00a698]' : 'border-white/50 group-hover:border-white'}`}>
                                         {nearbyFrom && <CheckIcon />}
                                     </div>
                                     <input type="checkbox" checked={nearbyFrom} onChange={(e) => setNearbyFrom(e.target.checked)} className="sr-only" />
-                                    <span>Add nearby airports</span>
+                                    <span className="font-medium">Add nearby airports</span>
                                 </label>
 
-                                <label className="flex items-center gap-2 cursor-pointer group">
-                                    <div className={`w-5 h-5 border-2 rounded flex items-center justify-center transition-all ${nearbyTo ? 'bg-[#00a698] border-[#00a698]' : 'border-gray-400 group-hover:border-white'}`}>
-                                        {nearbyTo && <CheckIcon />}
-                                    </div>
-                                    <input type="checkbox" checked={nearbyTo} onChange={(e) => setNearbyTo(e.target.checked)} className="sr-only" />
-                                    <span>Add nearby airports</span>
-                                </label>
-
-                                <label className="flex items-center gap-2 cursor-pointer group">
-                                    <div className={`w-5 h-5 border-2 rounded flex items-center justify-center transition-all ${directFlights ? 'bg-[#00a698] border-[#00a698]' : 'border-gray-400 group-hover:border-white'}`}>
+                                <label className="flex items-center gap-2.5 cursor-pointer group">
+                                    <div className={`w-5 h-5 border-2 rounded flex items-center justify-center transition-all ${directFlights ? 'bg-[#00a698] border-[#00a698]' : 'border-white/50 group-hover:border-white'}`}>
                                         {directFlights && <CheckIcon />}
                                     </div>
                                     <input type="checkbox" checked={directFlights} onChange={(e) => setDirectFlights(e.target.checked)} className="sr-only" />
-                                    <span>Direct flights</span>
+                                    <span className="font-medium">Direct flights only</span>
                                 </label>
                             </div>
                         </div>
                     )}
 
-                    {/* HOTELS FORM (Placeholder) */}
+                    {/* HOTELS FORM */}
                     {activeTab === 'hotels' && (
-                        <div className="flex flex-col gap-4 min-h-[140px] justify-center text-white">
-                            <p>Hotel search functionality coming soon...</p>
+                        <div className="space-y-4">
+                            <div className="flex flex-col lg:flex-row bg-white rounded-xl overflow-hidden shadow-lg">
+                                {/* Destination */}
+                                <div className="flex-[2] min-w-0 border-b lg:border-b-0 lg:border-r border-gray-200">
+                                    <div className="p-4">
+                                        <label className="block text-xs font-semibold text-gray-500 mb-1">Where do you want to stay?</label>
+                                        <input
+                                            type="text"
+                                            className="w-full text-lg font-bold text-[#05203c] outline-none bg-transparent truncate"
+                                            placeholder="Destination, hotel or attraction"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Check-in */}
+                                <div className="flex-1 min-w-0 border-b lg:border-b-0 lg:border-r border-gray-200">
+                                    <div className="p-4">
+                                        <label className="block text-xs font-semibold text-gray-500 mb-1">Check-in</label>
+                                        <input type="text" placeholder="Add date" className="w-full text-lg font-bold text-gray-400 outline-none bg-transparent" />
+                                    </div>
+                                </div>
+
+                                {/* Check-out */}
+                                <div className="flex-1 min-w-0 border-b lg:border-b-0 lg:border-r border-gray-200">
+                                    <div className="p-4">
+                                        <label className="block text-xs font-semibold text-gray-500 mb-1">Check-out</label>
+                                        <input type="text" placeholder="Add date" className="w-full text-lg font-bold text-gray-400 outline-none bg-transparent" />
+                                    </div>
+                                </div>
+
+                                {/* Guests */}
+                                <div className="flex-1 min-w-0 border-b lg:border-b-0 lg:border-r border-gray-200">
+                                    <div className="p-4">
+                                        <label className="block text-xs font-semibold text-gray-500 mb-1">Guests and rooms</label>
+                                        <div className="text-lg font-bold text-[#05203c]">1 adult, 1 room</div>
+                                    </div>
+                                </div>
+
+                                {/* Search Button */}
+                                <div className="p-2 lg:p-0">
+                                    <button className="w-full lg:w-auto h-full min-h-[56px] lg:min-h-full bg-[#00a698] hover:bg-[#008f82] text-white text-lg font-bold px-8 py-4 lg:rounded-none lg:rounded-r-xl rounded-lg transition-colors">
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     )}
 
-                    {/* TOURS FORM (Placeholder) */}
+                    {/* TOURS FORM */}
                     {activeTab === 'tours' && (
-                        <div className="flex flex-col gap-4 min-h-[140px] justify-center text-white">
-                            <p>Tours & Tickets search coming soon...</p>
+                        <div className="space-y-4">
+                            <div className="flex flex-col lg:flex-row bg-white rounded-xl overflow-hidden shadow-lg">
+                                {/* Destination */}
+                                <div className="flex-[2] min-w-0 border-b lg:border-b-0 lg:border-r border-gray-200">
+                                    <div className="p-4">
+                                        <label className="block text-xs font-semibold text-gray-500 mb-1">Where to?</label>
+                                        <input
+                                            type="text"
+                                            className="w-full text-lg font-bold text-[#05203c] outline-none bg-transparent truncate"
+                                            placeholder="Country, city or attraction"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Dates */}
+                                <div className="flex-1 min-w-0 border-b lg:border-b-0 lg:border-r border-gray-200">
+                                    <div className="p-4">
+                                        <label className="block text-xs font-semibold text-gray-500 mb-1">Dates</label>
+                                        <input type="text" placeholder="Add dates" className="w-full text-lg font-bold text-gray-400 outline-none bg-transparent" />
+                                    </div>
+                                </div>
+
+                                {/* Search Button */}
+                                <div className="p-2 lg:p-0">
+                                    <button className="w-full lg:w-auto h-full min-h-[56px] lg:min-h-full bg-[#00a698] hover:bg-[#008f82] text-white text-lg font-bold px-8 py-4 lg:rounded-none lg:rounded-r-xl rounded-lg transition-colors">
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     )}
-
                 </div>
             </div>
         </div>
