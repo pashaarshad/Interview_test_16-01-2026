@@ -131,14 +131,14 @@ function TravelHeader() {
 function TravelHero() {
     return (
         <div style={{ position: 'relative' }}>
-            {/* Background Image - travel_hero_adventure.jpg */}
+            {/* Background Image */}
             <div style={{
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 right: 0,
                 bottom: 0,
-                backgroundImage: 'url(/travel_hero_adventure.jpg)',
+                backgroundImage: 'url(https://www.iesonline.co.in/blog/images/travel-guide1.jpg)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 zIndex: 0,
@@ -217,13 +217,16 @@ function TravelHero() {
 
 // ===== TRENDING DESTINATIONS =====
 function TrendingDestinations() {
+    // Using single external image for all destinations
+    const defaultImage = 'https://www.iesonline.co.in/blog/images/travel-guide1.jpg';
+
     const destinations = [
-        { name: 'Bali, Indonesia', description: 'Tropical paradise with ancient temples', tag: 'Beach Paradise', image: '/bali_temple.jpg', color: '#10b981' },
-        { name: 'Tokyo, Japan', description: 'Where tradition meets future', tag: 'Culture Hub', image: '/tokyo_lights.jpg', color: '#8b5cf6' },
-        { name: 'Santorini, Greece', description: 'Iconic blue domes & sunsets', tag: 'Romantic Escape', image: '/santorini_sunset.jpg', color: '#f43f5e' },
-        { name: 'Dubai, UAE', description: 'Luxury & adventure combined', tag: 'Modern Marvel', image: '/dubai_burj.jpg', color: '#f59e0b' },
-        { name: 'Maldives', description: 'Crystal clear waters await', tag: 'Island Getaway', image: '/maldives_overwater.jpg', color: '#06b6d4' },
-        { name: 'Iceland', description: 'Land of fire and ice', tag: 'Nature Wonder', image: '/iceland_aurora.jpg', color: '#84cc16' },
+        { name: 'Bali, Indonesia', description: 'Tropical paradise with ancient temples', tag: 'Beach Paradise', image: defaultImage, color: '#10b981' },
+        { name: 'Tokyo, Japan', description: 'Where tradition meets future', tag: 'Culture Hub', image: defaultImage, color: '#8b5cf6' },
+        { name: 'Santorini, Greece', description: 'Iconic blue domes & sunsets', tag: 'Romantic Escape', image: defaultImage, color: '#f43f5e' },
+        { name: 'Dubai, UAE', description: 'Luxury & adventure combined', tag: 'Modern Marvel', image: defaultImage, color: '#f59e0b' },
+        { name: 'Maldives', description: 'Crystal clear waters await', tag: 'Island Getaway', image: defaultImage, color: '#06b6d4' },
+        { name: 'Iceland', description: 'Land of fire and ice', tag: 'Nature Wonder', image: defaultImage, color: '#84cc16' },
     ];
 
     return (
@@ -419,33 +422,36 @@ function TravelTips() {
 
 // ===== FEATURED ARTICLES =====
 function FeaturedArticles() {
+    // Using single external image for all articles
+    const defaultImage = 'https://www.iesonline.co.in/blog/images/travel-guide1.jpg';
+
     const articles = [
         {
             title: '10 Hidden Gems in Southeast Asia You Must Visit',
             category: 'Adventure',
             readTime: '8 min read',
-            image: '/article_asia.jpg',
+            image: defaultImage,
             author: 'Sarah Chen'
         },
         {
             title: 'The Ultimate Guide to Solo Female Travel',
             category: 'Tips & Advice',
             readTime: '12 min read',
-            image: '/article_solo.jpg',
+            image: defaultImage,
             author: 'Maya Rodriguez'
         },
         {
             title: 'Budget-Friendly European Road Trips',
             category: 'Budget Travel',
             readTime: '10 min read',
-            image: '/article_europe.jpg',
+            image: defaultImage,
             author: 'James Wilson'
         },
         {
             title: 'Best Street Food Markets Around the World',
             category: 'Food & Culture',
             readTime: '7 min read',
-            image: '/article_food.jpg',
+            image: defaultImage,
             author: 'Priya Patel'
         },
     ];
