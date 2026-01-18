@@ -414,12 +414,14 @@ function FlightFeatures() {
 
 // ===== FLIGHT DEALS =====
 function FlightDeals() {
+    // Using single image for all destinations: GettyImages-479156297.jpg
+    const defaultImage = '/GettyImages-479156297.jpg';
+
     const deals = [
         {
             city: 'Salem',
             country: 'India',
-            // Image: salem_temple_colorful.jpg
-            image: '/salem_temple_colorful.jpg',
+            image: defaultImage,
             flights: [
                 { date: 'Tue, 27 Jan', route: 'BLR - SXV with Alliance Air', type: 'Direct' },
                 { date: 'Wed, 28 Jan', route: 'SXV - BLR with Alliance Air', type: 'Direct' }
@@ -429,8 +431,7 @@ function FlightDeals() {
         {
             city: 'Muscat',
             country: 'Oman',
-            // Image: muscat_golden_mosque.jpg
-            image: '/muscat_golden_mosque.jpg',
+            image: defaultImage,
             flights: [
                 { date: 'Mon, 2 Feb', route: 'BLR - MCT with SalamAir', type: 'Direct' },
                 { date: 'Wed, 4 Feb', route: 'MCT - BLR with SalamAir', type: 'Direct' }
@@ -440,8 +441,7 @@ function FlightDeals() {
         {
             city: 'Bangkok',
             country: 'Thailand',
-            // Image: bangkok_wat_arun_temple.jpg
-            image: '/bangkok_wat_arun_temple.jpg',
+            image: defaultImage,
             flights: [
                 { date: 'Mon, 2 Mar', route: 'BLR - DMK with Thai LionAir', type: 'Direct' },
                 { date: 'Thu, 19 Mar', route: 'DMK - BLR with Thai AirAsia', type: 'Direct' }
@@ -451,8 +451,7 @@ function FlightDeals() {
         {
             city: 'Kuala Lumpur',
             country: 'Malaysia',
-            // Image: kuala_lumpur_skyline_night.jpg
-            image: '/kuala_lumpur_skyline_night.jpg',
+            image: defaultImage,
             flights: [
                 { date: 'Wed, 18 Mar', route: 'BLR - KUL with AirAsia', type: 'Direct' },
                 { date: 'Mon, 23 Mar', route: 'KUL - BLR with AirAsia', type: 'Direct' }
@@ -462,8 +461,7 @@ function FlightDeals() {
         {
             city: 'Singapore',
             country: 'Singapore',
-            // Image: singapore_marina_bay_flyer.jpg
-            image: '/singapore_marina_bay_flyer.jpg',
+            image: defaultImage,
             flights: [
                 { date: 'Tue, 3 Feb', route: 'BLR - SIN with IndiGo', type: 'Direct' },
                 { date: 'Thu, 5 Feb', route: 'SIN - BLR with IndiGo', type: 'Direct' }
@@ -473,8 +471,7 @@ function FlightDeals() {
         {
             city: 'Kuwait',
             country: 'Kuwait',
-            // Image: kuwait_city_skyline.jpg
-            image: '/kuwait_city_skyline.jpg',
+            image: defaultImage,
             flights: [
                 { date: 'Fri, 13 Mar', route: 'BLR - KWI with Kuwait Airways', type: 'Direct' },
                 { date: 'Sun, 22 Mar', route: 'KWI - BLR with Kuwait Airways', type: 'Direct' }
@@ -650,20 +647,17 @@ function FlightFAQ() {
 function BestDealsSection() {
     const features = [
         {
-            // Image: globe_illustration.png
-            icon: '/globe_illustration.png',
+            icon: '🌍',
             title: "Search 'Everywhere', explore anywhere",
             description: "Enter your departure airport and travel dates, then hit 'Everywhere'. You'll see flights to every destination in the world, cheapest first."
         },
         {
-            // Image: passport_credit_card.png
-            icon: '/passport_credit_card.png',
+            icon: '💳',
             title: "Pay less, go further with transparent pricing",
             description: "The cheapest flight deals. No hidden fees. No funny business. With us, the price you see when you search is what you'll pay."
         },
         {
-            // Image: alarm_clock_alert.png
-            icon: '/alarm_clock_alert.png',
+            icon: '⏰',
             title: "Book when it's best with Price Alerts",
             description: "Found your flight, but not quite ready to book? Set up Price Alerts and we'll let you know when your flight price goes up or down."
         }
@@ -690,16 +684,10 @@ function BestDealsSection() {
                                 borderRadius: '50%',
                                 display: 'flex',
                                 alignItems: 'center',
-                                justifyContent: 'center'
+                                justifyContent: 'center',
+                                fontSize: '48px'
                             }}>
-                                <img
-                                    src={feature.icon}
-                                    alt={feature.title}
-                                    style={{ width: '60px', height: '60px', objectFit: 'contain' }}
-                                    onError={(e) => {
-                                        (e.target as HTMLImageElement).style.display = 'none';
-                                    }}
-                                />
+                                {feature.icon}
                             </div>
                             <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#161616', marginBottom: '12px' }}>
                                 {feature.title}

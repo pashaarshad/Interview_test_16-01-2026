@@ -164,14 +164,14 @@ function HotelsHeader() {
 function HotelsHero() {
     return (
         <div style={{ position: 'relative' }}>
-            {/* Background Image - hotels_hero_poolside.jpg */}
+            {/* Background Image */}
             <div style={{
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 right: 0,
                 bottom: 0,
-                backgroundImage: 'url(/hotels_hero_poolside.jpg)',
+                backgroundImage: 'url(/alexander-kaunas-xEaAoizNFV8-unsplash_CROP.jpg)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 zIndex: 0,
@@ -358,7 +358,7 @@ function PromoBanner() {
                     borderRadius: '16px',
                     overflow: 'hidden',
                     height: '320px',
-                    backgroundImage: 'url(/hotels_promo_santorini.jpg)',
+                    backgroundImage: 'url(/alexander-kaunas-xEaAoizNFV8-unsplash_CROP.jpg)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}>
@@ -447,6 +447,9 @@ function HomeCountryHotels() {
     const [activeCity, setActiveCity] = useState('Hyderabad');
     const cities = ['Hyderabad', 'Bengaluru', 'New Delhi', 'Mumbai', 'Jaipur'];
 
+    // Using single image for all hotels
+    const defaultImage = '/alexander-kaunas-xEaAoizNFV8-unsplash_CROP.jpg';
+
     const hotels = [
         {
             name: 'Hotel O Langar Houz Near...',
@@ -456,8 +459,7 @@ function HomeCountryHotels() {
             reviews: 47,
             price: '₹727',
             stars: 4,
-            // Image: hotel_langar_houz.jpg
-            image: '/hotel_langar_houz.jpg'
+            image: defaultImage
         },
         {
             name: 'Golden Premier Luxury Hot...',
@@ -467,8 +469,7 @@ function HomeCountryHotels() {
             reviews: 80,
             price: '₹970',
             stars: 5,
-            // Image: hotel_golden_premier.jpg
-            image: '/hotel_golden_premier.jpg'
+            image: defaultImage
         },
         {
             name: 'Hotel Green Leaf',
@@ -478,8 +479,7 @@ function HomeCountryHotels() {
             reviews: 5,
             price: '₹970',
             stars: 5,
-            // Image: hotel_green_leaf.jpg
-            image: '/hotel_green_leaf.jpg'
+            image: defaultImage
         }
     ];
 
@@ -568,10 +568,13 @@ function HomeCountryHotels() {
 
 // ===== CITY BREAKS =====
 function CityBreaks() {
+    // Using single image for all city breaks
+    const defaultImage = '/alexander-kaunas-xEaAoizNFV8-unsplash_CROP.jpg';
+
     const cities = [
-        { name: 'Dubai', country: 'United Arab Emirates', price: '₹1,321', image: '/dubai_skyline.jpg' },
-        { name: 'Bangkok', country: 'Thailand', price: '₹645', image: '/bangkok_temple.jpg' },
-        { name: 'London', country: 'United Kingdom', price: '₹613', image: '/london_bigben.jpg' },
+        { name: 'Dubai', country: 'United Arab Emirates', price: '₹1,321', image: defaultImage },
+        { name: 'Bangkok', country: 'Thailand', price: '₹645', image: defaultImage },
+        { name: 'London', country: 'United Kingdom', price: '₹613', image: defaultImage },
     ];
 
     return (
@@ -765,11 +768,14 @@ function HotelFAQ() {
 
 // ===== EXPLORE MORE =====
 function ExploreMore() {
+    // Using single image for all articles
+    const defaultImage = '/alexander-kaunas-xEaAoizNFV8-unsplash_CROP.jpg';
+
     const articles = [
-        { title: 'The Smarter Summer Report', date: '10 June 2025', author: 'Skyscanner', image: '/article_summer.jpg' },
-        { title: 'Expert advice: Planning your first independent trip', date: '23 April 2024', author: 'Skyscanner', image: '/article_planning.jpg' },
-        { title: 'All you need to know about Disney locations from around the world', date: '20 March 2025', author: 'Skyscanner', image: '/article_disney.jpg' },
-        { title: 'Are Indian cricket fans the best cricket fans in the world?', date: '16 October 2023', author: 'Noelia Guinon', image: '/article_cricket.jpg' },
+        { title: 'The Smarter Summer Report', date: '10 June 2025', author: 'Skyscanner', image: defaultImage },
+        { title: 'Expert advice: Planning your first independent trip', date: '23 April 2024', author: 'Skyscanner', image: defaultImage },
+        { title: 'All you need to know about Disney locations from around the world', date: '20 March 2025', author: 'Skyscanner', image: defaultImage },
+        { title: 'Are Indian cricket fans the best cricket fans in the world?', date: '16 October 2023', author: 'Noelia Guinon', image: defaultImage },
     ];
 
     return (
