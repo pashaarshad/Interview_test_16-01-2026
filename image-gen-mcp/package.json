@@ -1,0 +1,19 @@
+{
+    "name": "image-gen-mcp",
+    "version": "1.0.0",
+    "description": "MCP server for free image generation using Pollinations.ai",
+    "main": "build/index.js",
+    "scripts": {
+        "build": "tsc",
+        "start": "node build/index.js"
+    },
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^0.6.1",
+        "axios": "^1.13.2",
+        "zod": "^4.3.5"
+    },
+    "devDependencies": {
+        "@types/node": "^20.19.30",
+        "typescript": "^5.9.3"
+    }
+}
