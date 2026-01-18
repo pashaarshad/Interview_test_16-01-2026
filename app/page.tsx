@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 // ===== RESPONSIVE STYLES =====
 const ResponsiveStyles = () => (
@@ -104,9 +105,9 @@ const HotelIcon = () => (
   </svg>
 );
 
-const CarIcon = () => (
+const TravelIcon = () => (
   <svg style={{ width: '16px', height: '16px' }} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z" />
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
   </svg>
 );
 
@@ -177,30 +178,31 @@ function Header() {
         {/* Tab Navigation */}
         <div style={{ display: 'flex', gap: '8px', paddingBottom: '24px' }}>
           {[
-            { id: 'flights', label: 'Flights', Icon: FlightIcon },
-            { id: 'hotels', label: 'Hotels', Icon: HotelIcon },
-            { id: 'cars', label: 'Cars', Icon: CarIcon },
+            { id: 'flights', label: 'Flights', Icon: FlightIcon, href: '/flights' },
+            { id: 'hotels', label: 'Hotels', Icon: HotelIcon, href: '/hotels' },
+            { id: 'travel', label: 'Travel Guide', Icon: TravelIcon, href: '/travel' },
           ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '10px 18px',
-                borderRadius: '24px',
-                border: activeTab === tab.id ? 'none' : '1px solid rgba(255,255,255,0.3)',
-                cursor: 'pointer',
-                fontSize: '14px',
-                fontWeight: '500',
-                backgroundColor: activeTab === tab.id ? '#0770e3' : 'transparent',
-                color: 'white',
-              }}
-            >
-              <tab.Icon />
-              {tab.label}
-            </button>
+            <Link key={tab.id} href={tab.href} style={{ textDecoration: 'none' }}>
+              <button
+                onClick={() => setActiveTab(tab.id)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '10px 18px',
+                  borderRadius: '24px',
+                  border: activeTab === tab.id ? 'none' : '1px solid rgba(255,255,255,0.3)',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  backgroundColor: activeTab === tab.id ? '#0770e3' : 'transparent',
+                  color: 'white',
+                }}
+              >
+                <tab.Icon />
+                {tab.label}
+              </button>
+            </Link>
           ))}
         </div>
       </div>
@@ -467,7 +469,7 @@ function ActionButtons() {
             fontWeight: '500',
             fontSize: '16px',
           }}>
-            <CarIcon /> Car hire
+            <TravelIcon /> Travel Guide
           </button>
           <button style={{
             backgroundColor: '#05203c',
